@@ -59,7 +59,7 @@ class JSONGenerator {
             }
         }
 
-        return JSONString("null")
+        return JSONNull()
     }
 
 }

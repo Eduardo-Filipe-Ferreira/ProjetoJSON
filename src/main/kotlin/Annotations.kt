@@ -1,9 +1,5 @@
 
-@Retention(AnnotationRetention.SOURCE)
-@Target(AnnotationTarget.PROPERTY
-//        , AnnotationTarget.VALUE_PARAMETER
-//        , AnnotationTarget.EXPRESSION
-)
+@Target(AnnotationTarget.PROPERTY)
 annotation class Skip
 
 @Target(AnnotationTarget.PROPERTY)

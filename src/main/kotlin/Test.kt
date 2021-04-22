@@ -26,6 +26,8 @@ fun main() {
     val arr1 = JSONArray()
     val arr2 = JSONArray()
     val arr3 = JSONArray()
+    
+    val _null1 = JSONNull()
 
 
     obj1.addProperty("Object2",obj2)
@@ -43,6 +45,8 @@ fun main() {
     arr1.addProperty(num1)
 
     obj1.addProperty("Array1",arr1)
+    
+    obj1.addProperty("Null1",_null1)
 
     val visitor = SerializeVisitor(obj1)
 
@@ -71,7 +75,7 @@ fun main() {
 
     val nullValue = null
 
-    val list = setOf<Any>(3,"String",3,true,3,2,4,1)
+    val list = setOf<Any>(3,"String",3,true,3,Point(3,2),4,1)
 
     val enum = EnumClass.ENUM1
 

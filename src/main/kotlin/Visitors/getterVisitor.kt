@@ -45,6 +45,11 @@ class GetterVisitor(_object: JSONObject,
             results.add(string)
     }
 
+    override fun visit(_null: JSONNull) {
+        if (accept(_null))
+            results.add(_null)
+    }
+
     override fun endVisit(_object: JSONObject) {}
 
     override fun endVisit(array: JSONArray) {}

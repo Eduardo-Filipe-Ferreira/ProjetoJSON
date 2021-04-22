@@ -26,5 +26,7 @@ interface JSONVisitor {
 
     fun visit(string: JSONString)
 
+    fun visit(_null: JSONNull)
+
 
 }

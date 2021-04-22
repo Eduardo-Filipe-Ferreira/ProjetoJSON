@@ -12,14 +12,14 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
     }
 
 
-    override fun visit(value: JSONObject): Boolean {
+    override fun visit(_object: JSONObject): Boolean {
 
-        objectMap += value.getTabs() +
+        objectMap += _object.getTabs() +
 
-                if (value.parent != null) {
-                    if (value.parent is JSONObject) {
-                        "\"" + (value.parent as JSONObject).getKey(value) + "\":{" +
-                        if (value.children!!.isNotEmpty())
+                if (_object.parent != null) {
+                    if (_object.parent is JSONObject) {
+                        "\"" + (_object.parent as JSONObject).getKey(_object) + "\":{" +
+                        if (_object.children!!.isNotEmpty())
                             "\n"
                         else
                             ""
@@ -29,7 +29,7 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
                 } else
                     "{\n"
 
-        if (value.children!!.isEmpty())
+        if (_object.children.isEmpty())
             return false
         return true
     }
@@ -38,7 +38,7 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
     override fun endVisit(_object: JSONObject){
 
         objectMap += (
-                if(_object.children!!.isNotEmpty())
+                if(_object.children.isNotEmpty())
                     _object.getTabs()
                 else
                     ""
@@ -64,7 +64,7 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
         objectMap += array.getTabs() +
                      getNameIfParentIsObject(array) + "["
 
-        if (array.children!!.isEmpty())
+        if (array.children.isEmpty())
             return false
         return true
 
@@ -75,23 +75,42 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
     }
 
     override fun visit(number: JSONNumber) {
-        objectMap += number.getTabs() +
+        objectMap +=
+                    (if(!checkIfIsInArray(number))
+                        number.getTabs()
+                    else
+                        "") +
                      getNameIfParentIsObject(number) +
                      number.value.toString()+
                      addComaIfLast(number)
     }
 
     override fun visit(boolean: JSONBoolean) {
-        objectMap += boolean.getTabs() +
+        objectMap += (if(!checkIfIsInArray(boolean))
+                        boolean.getTabs()
+                    else
+                        "") +
                      getNameIfParentIsObject(boolean) +
                      boolean.value.toString()+
                      addComaIfLast(boolean)
     }
 
     override fun visit(string: JSONString) {
-        objectMap += string.getTabs() +
+        objectMap += (if(!checkIfIsInArray(string))
+                        string.getTabs()
+                    else
+                        "") +
                      getNameIfParentIsObject(string) +
                      "\"${string.value}\"${addComaIfLast(string)}"
+    }
+
+    override fun visit(_null: JSONNull) {
+        objectMap += (if(!checkIfIsInArray(_null))
+                        _null.getTabs()
+                    else
+                        "") +
+                getNameIfParentIsObject(_null) +
+                "\"${_null.value}\"${addComaIfLast(_null)}"
     }
 
 
@@ -101,9 +120,16 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
 
         if (value.parent is JSONObject)
             adder += if (!(value.parent as JSONObject).isLastJSONValue(value))
-                ",\n"
+                "," +
+                if(checkIfIsInArray(value))
+                    ""
+                else
+                    "\n"
             else
-                "\n"
+                if(checkIfIsInArray(value))
+                    ""
+                else
+                    "\n"
 
         if(value.parent is JSONArray)
             if (!(value.parent as JSONArray).isLastJSONValue(value))

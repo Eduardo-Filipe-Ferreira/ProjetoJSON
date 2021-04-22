@@ -9,20 +9,19 @@ import Visitors.JSONVisitor
 *
 * */
 
-class JSONObject(var children: MutableMap<String, JSONValue>? = mutableMapOf()) : JSONValue(children) {
+class JSONObject(val children: MutableMap<String, JSONValue> = mutableMapOf()) : JSONValue(children) {
 
     init {
-        if (children!!.isNotEmpty())
-            children!!.forEach{(key,value) ->
-                addProperty(key,value)
-            }
+        children.forEach{(key,value) ->
+            addProperty(key,value)
+        }
     }
 
     override fun accept(visitor: JSONVisitor) {
 
         if(visitor.visit(this))
-            if(children!!.isNotEmpty())
-                children!!.forEach{ (_, value) ->
+            if(children.isNotEmpty())
+                children.forEach{ (_, value) ->
                     value.accept(visitor)
                 }
         visitor.endVisit(this)
@@ -31,15 +30,15 @@ class JSONObject(var children: MutableMap<String, JSONValue>? = mutableMapOf()) 
     fun addProperty(name:String,value:JSONValue){
         value.parent = this
         value.depth = this.depth + 1
-        children!![name] = value
+        children[name] = value
     }
 
     fun getKey(target: JSONValue): String {
-        return children!!.filter { target == it.value }.keys.first()
+        return children.filter { target == it.value }.keys.first()
     }
 
     fun isLastJSONValue(value: JSONValue): Boolean{
-        if(children!!.keys.indexOf(getKey(value)) == children!!.keys.size - 1)
+        if(children.keys.indexOf(getKey(value)) == children.keys.size - 1)
             return true
         return false
     }
