@@ -1,103 +1,65 @@
 import JSONValues.*
 import kotlin.reflect.KClass
-import kotlin.reflect.KProperty
 import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.findAnnotation
+import kotlin.reflect.full.hasAnnotation
 
 @Suppress("UNCHECKED_CAST")
 class JSONGenerator {
 
-    fun getJSONValue(value:Any , valueParent: JSONComposedValue? = null): JSONValue{
 
-        val valueClass :KClass<Any> = value::class as KClass<Any>
+    fun getJSONValue(value:Any?): JSONValue{
 
-        println("$valueClass\n")
-
-        if (valueClass.isData) {
-
-            val valueObject = JSONObject("", parent = valueParent)
-
-            valueClass.declaredMemberProperties.forEach {
-//                println("$it" + "\n")
-                getJSONValue(value = it, valueParent = valueObject)
+        when (value){
+            is Number -> return JSONNumber(value)
+            is String -> return JSONString(value)
+            is Char -> return JSONString(value as String)
+            is Boolean -> return JSONBoolean(value)
+            is Collection<*> -> {
+                val valueArray = JSONArray()
+                value.forEach {
+                    valueArray.addProperty(getJSONValue(it))
+                }
+                return valueArray
             }
-
-            return valueObject
-
-        //repartir funcao para ter so as classes em si
-
-        }
-
-        if (value is KProperty<*>) {
-            println(value.returnType.classifier as KClass<*>)
-
-            when(value.returnType.classifier as KClass<*>){
-                Int::class -> {
-                    return if (valueParent != null)
-                        JSONNumber(3, valueParent)
-                    else
-                        JSONNumber(2, JSONObject("null"))
+            is Map<*,*> -> {
+                val valueObject = JSONObject()
+                value.forEach {(key,_value)->
+                    valueObject.addProperty(key.toString(),getJSONValue(_value))
                 }
+                return valueObject
+            }
+            is Enum<*> -> return JSONString(value.name)
+            else -> { //data class or null
+                if(value != null) {
+                    val valueObject = JSONObject()
 
-                Double::class -> {
-                    return if (valueParent != null)
-                        JSONNumber(3, valueParent)
-                    else
-                        JSONNumber(2, JSONObject("null"))
+                    val valueClass: KClass<Any> = value::class as KClass<Any>
+
+                    if (valueClass.isData) {
+
+                        valueClass.declaredMemberProperties.forEach {
+                            if (!it.hasAnnotation<Skip>()) {
+                                if (it.hasAnnotation<ID>())
+                                    valueObject.addProperty(
+                                        it.findAnnotation<ID>()!!.id,
+                                        getJSONValue(it.call(value)!!)
+                                    )
+                                else
+                                    valueObject.addProperty(
+                                        it.name,
+                                        getJSONValue(it.call(value)!!)
+                                    )
+                            }
+                        }
+
+                        return valueObject
+                    }
                 }
-
-                Float::class -> {
-                    return if (valueParent != null)
-                        JSONNumber(3, valueParent)
-                    else
-                        JSONNumber(2, JSONObject("null"))
-                }
-
-                String::class -> {
-                    return if (valueParent != null)
-                        JSONString("Value", valueParent)
-                    else
-                        JSONString("Value", JSONObject("null"))
-                }
-
-                Char::class -> {
-                    return if (valueParent != null)
-                        JSONString("Value", valueParent)
-                    else
-                        JSONString("Value", JSONObject("null"))
-                }
-
-                Boolean::class -> {
-                    return if (valueParent != null)
-                        JSONBoolean(true, valueParent)
-                    else
-                        JSONBoolean(false, JSONObject("null"))
-
-                }
-
-                Collection::class ->{
-                    val list: MutableList<JSONValue> = mutableListOf()
-
-                    return if (valueParent != null)
-
-                        JSONArray(list, valueParent)
-                    else
-                        JSONString("Value", JSONObject("null"))
-
-                }
-
-                Map::class -> {
-
-                }
-
-                Enum::class -> {
-
-                }
-
-
-
             }
         }
-        return JSONObject("null")
+
+        return JSONString("null")
     }
 
 }

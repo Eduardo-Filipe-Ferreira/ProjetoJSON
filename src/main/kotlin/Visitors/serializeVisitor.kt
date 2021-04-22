@@ -14,44 +14,48 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
 
     override fun visit(value: JSONObject): Boolean {
 
-        val map = value.getTabs() +
+        objectMap += value.getTabs() +
 
                 if (value.parent != null) {
-                    if (value.parent is JSONObject)
-                        (value.parent as JSONObject).getKey(value) + "{\n"
+                    if (value.parent is JSONObject) {
+                        "\"" + (value.parent as JSONObject).getKey(value) + "\":{" +
+                        if (value.children!!.isNotEmpty())
+                            "\n"
+                        else
+                            ""
+                    }
                     else
                         "{" //parent is JSONArray
                 } else
                     "{\n"
 
-        objectMap += removeNameTabsAndEntersOnArrays(value,map)
-
-        if (value.children.isEmpty())
+        if (value.children!!.isEmpty())
             return false
         return true
     }
 
 
-    override fun endVisit(value: JSONObject){
+    override fun endVisit(_object: JSONObject){
 
-        objectMap +=removeNameTabsAndEntersOnArrays(value,
-        value.getTabs() +
-
-            if(value.parent != null){
-                if(value.parent is JSONObject)
-                    if (!(value.parent as JSONObject).isLastJSONValue(value))
-                        "},\n"
-                    else
-                        "}\n"
-                else //parent is JSONArray
-                    if(!(value.parent as JSONArray).isLastJSONValue(value))
-                        "},"
-                    else
-                        "}"
-            }
-            else
-                "}\n"
-        )
+        objectMap += (
+                if(_object.children!!.isNotEmpty())
+                    _object.getTabs()
+                else
+                    ""
+                )+
+                if (_object.parent != null)
+                    if(_object.parent is JSONObject)
+                        if (!(_object.parent as JSONObject).isLastJSONValue(_object))
+                            "},\n"
+                        else
+                            "}\n"
+                    else //parent is JSONArray
+                        if(!(_object.parent as JSONArray).isLastJSONValue(_object))
+                            "},"
+                        else
+                            "}"
+                else
+                    "}"
 
     }
 
@@ -60,7 +64,7 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
         objectMap += array.getTabs() +
                      getNameIfParentIsObject(array) + "["
 
-        if (array.children.isEmpty())
+        if (array.children!!.isEmpty())
             return false
         return true
 
@@ -85,9 +89,9 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
     }
 
     override fun visit(string: JSONString) {
-        objectMap += string.getTabs() + "\"" +
+        objectMap += string.getTabs() +
                      getNameIfParentIsObject(string) +
-                     "\":\"${string.value}\"${addComaIfLast(string)}"
+                     "\"${string.value}\"${addComaIfLast(string)}"
     }
 
 
@@ -96,8 +100,10 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
         var adder = ""
 
         if (value.parent is JSONObject)
-            if (!(value.parent as JSONObject).isLastJSONValue(value))
-                adder += ",\n"
+            adder += if (!(value.parent as JSONObject).isLastJSONValue(value))
+                ",\n"
+            else
+                "\n"
 
         if(value.parent is JSONArray)
             if (!(value.parent as JSONArray).isLastJSONValue(value))

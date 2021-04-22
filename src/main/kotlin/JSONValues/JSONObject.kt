@@ -9,29 +9,28 @@ import Visitors.JSONVisitor
 *
 * */
 
-class JSONObject(children: MutableMap<String, JSONValue>? = mutableMapOf(),
-                 parent: JSONComposedValue? = null) : JSONComposedValue(children, parent) {
+class JSONObject(var children: MutableMap<String, JSONValue>? = mutableMapOf()) : JSONValue(children) {
 
     init {
-        if (children != null) {
-            this.children = children
-        }
+        if (children!!.isNotEmpty())
+            children!!.forEach{(key,value) ->
+                addProperty(key,value)
+            }
     }
-
 
     override fun accept(visitor: JSONVisitor) {
 
         if(visitor.visit(this))
             if(children!!.isNotEmpty())
-                children!!.forEach{ (key, value) ->
+                children!!.forEach{ (_, value) ->
                     value.accept(visitor)
                 }
         visitor.endVisit(this)
     }
 
-
     fun addProperty(name:String,value:JSONValue){
         value.parent = this
+        value.depth = this.depth + 1
         children!![name] = value
     }
 

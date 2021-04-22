@@ -3,16 +3,15 @@ package JSONValues
 import JSONValue
 import Visitors.JSONVisitor
 
-class JSONArray(children: MutableList<JSONValue>? = mutableListOf(),
-                parent: JSONComposedValue? = null) : JSONComposedValue(children, parent) {
+class JSONArray(var children: MutableList<JSONValue>? = mutableListOf()) : JSONValue(children) {
 
-//    var children: MutableList<JSONValue> = mutableListOf()
-//
-//    init {
-//        if (children != null) {
-//            this.children = children
-//        }
-//    }
+
+    init {
+        if (children!!.isNotEmpty())
+            children!!.forEach{
+                addProperty(it)
+            }
+    }
 
 
     override fun accept(visitor: JSONVisitor) {
@@ -25,8 +24,13 @@ class JSONArray(children: MutableList<JSONValue>? = mutableListOf(),
     }
 
     fun isLastJSONValue(value: JSONValue): Boolean{
-        if(children.indexOf(value) == children.size - 1)
+        if(children!!.indexOf(value) == children!!.size - 1)
             return true
         return false
+    }
+
+    fun addProperty(value:JSONValue){
+        children!!.add(value)
+        value.parent = this
     }
 }

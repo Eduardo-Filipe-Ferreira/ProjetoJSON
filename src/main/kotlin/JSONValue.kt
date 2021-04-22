@@ -2,8 +2,11 @@ import JSONValues.JSONArray
 import JSONValues.JSONComposedValue
 import JSONValues.JSONObject
 import Visitors.JSONVisitor
+import kotlin.properties.Delegates
 
-abstract class JSONValue(var value: Any? = null, var parent: JSONComposedValue? = null) {
+abstract class JSONValue(var value: Any? = null
+//                         , var parent: JSONComposedValue? = null
+) {
 
 
     /*
@@ -37,12 +40,9 @@ abstract class JSONValue(var value: Any? = null, var parent: JSONComposedValue? 
     *
     * */
 
-    val depth : Int get() =
-        when (parent) {
-            null -> 0
-            is JSONArray -> parent!!.depth
-            else -> parent!!.depth + 1
-        }
+    var depth :Int = 0
+
+    var parent : JSONValue? = null
 
     /*
     *
@@ -51,7 +51,6 @@ abstract class JSONValue(var value: Any? = null, var parent: JSONComposedValue? 
     * */
 
     abstract fun accept(visitor: JSONVisitor)
-
 
     /*
     *

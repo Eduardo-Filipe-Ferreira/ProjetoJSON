@@ -16,7 +16,7 @@ class GetterVisitor(_object: JSONObject,
         if (accept(_object))
             results.add(_object)
 
-        if(_object.children.isEmpty())
+        if(_object.children!!.isEmpty())
             return false
         return true
     }
@@ -25,7 +25,7 @@ class GetterVisitor(_object: JSONObject,
         if (accept(array))
             results.add(array)
 
-        if(array.children.isEmpty())
+        if(array.children!!.isEmpty())
             return false
         return true
     }

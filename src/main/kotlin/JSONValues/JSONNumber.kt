@@ -3,7 +3,7 @@ package JSONValues
 import JSONValue
 import Visitors.JSONVisitor
 
-class JSONNumber(value: Number, parent: JSONComposedValue? = null) : JSONValue(value, parent) {
+class JSONNumber(value: Number) : JSONValue(value) {
 
 
     override fun accept(visitor: JSONVisitor) {
