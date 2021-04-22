@@ -7,6 +7,13 @@ enum class EnumClass {
 }
 
 fun main() {
+
+    /*
+    *
+    * Init for test values
+    *
+    * */
+
     val obj1 = JSONObject()
     val obj2 = JSONObject()
     val obj3 = JSONObject()
@@ -48,17 +55,36 @@ fun main() {
     
     obj1.addProperty("Null1",_null1)
 
+    /*
+    *
+    * test for serialize visitors of the object created
+    *
+    * */
+
     val visitor = SerializeVisitor(obj1)
 
+    println("Test: Serialize visitors of the object created")
     println(visitor.objectMap)
 
     val isString = {value: JSONValue -> value is JSONString }
 
     val visitorGetter: GetterVisitor = GetterVisitor(obj1,isString)
 
+    /*
+    *
+    * test for getter visitors of the object created
+    * searches for strings
+    *
+    * */
+
+    println("Test: getter visitors of the object created -> search for strings")
     println(visitorGetter.results)
 
+
+
+    /*      SECOND PhaSE        */
     println("")
+
 
     data class Point(
         @Skip
@@ -87,6 +113,7 @@ fun main() {
 
         "z" to 3)
 
+
     val gen = JSONGenerator()
 
     val ser1 = SerializeVisitor(gen.getJSONValue(Point(1,2)))
@@ -98,16 +125,37 @@ fun main() {
     val ser7 = SerializeVisitor(gen.getJSONValue(enum))
     val ser8 = SerializeVisitor(gen.getJSONValue(map))
 
-
+    println("Test: serialize of data class")
     println(ser1.objectMap)
-    println(ser2.objectMap)
-    println(ser3.objectMap)
-    println(ser4.objectMap)
-    println(ser5.objectMap)
-    println(ser6.objectMap)
-    println(ser7.objectMap)
-    println(ser8.objectMap)
+    println("")
 
+    println("Test: serialize of String")
+    println(ser2.objectMap)
+    println("")
+
+    println("Test: serialize of Number")
+    println(ser3.objectMap)
+    println("")
+
+    println("Test: serialize of Boolean")
+    println(ser4.objectMap)
+    println("")
+
+    println("Test: serialize of null value")
+    println(ser5.objectMap)
+    println("")
+
+    println("Test: serialize of List")
+    println(ser6.objectMap)
+    println("")
+
+    println("Test: serialize of Enum")
+    println(ser7.objectMap)
+    println("")
+
+    println("Test: serialize of Map")
+    println(ser8.objectMap)
+    println("")
 
 
 }
