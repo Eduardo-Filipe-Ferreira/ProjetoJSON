@@ -19,7 +19,7 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
                 if (_object.parent != null) {
                     if (_object.parent is JSONObject) {
                         "\"" + (_object.parent as JSONObject).getKey(_object) + "\":{" +
-                        if (_object.children!!.isNotEmpty())
+                        if (_object.children.isNotEmpty())
                             "\n"
                         else
                             ""
@@ -110,7 +110,7 @@ class SerializeVisitor(_object : JSONValue):JSONVisitor {
                     else
                         "") +
                 getNameIfParentIsObject(_null) +
-                "\"${_null.value}\"${addComaIfLast(_null)}"
+                "${_null.value}${addComaIfLast(_null)}"
     }
 
 

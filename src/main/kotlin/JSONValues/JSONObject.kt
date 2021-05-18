@@ -33,6 +33,11 @@ class JSONObject(val children: MutableMap<String, JSONValue> = mutableMapOf()) :
         children[name] = value
     }
 
+    fun removeProperty(value:JSONValue){
+        val name = getKey(value)
+        children.remove(name,value)
+    }
+
     fun getKey(target: JSONValue): String {
         return children.filter { target == it.value }.keys.first()
     }

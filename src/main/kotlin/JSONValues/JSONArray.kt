@@ -32,4 +32,8 @@ class JSONArray(val children: MutableList<JSONValue> = mutableListOf()) : JSONVa
         children.add(value)
         value.parent = this
     }
+
+    fun removeProperty(value:JSONValue){
+        children.remove(value)
+    }
 }
