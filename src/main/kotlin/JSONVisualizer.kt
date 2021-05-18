@@ -21,7 +21,6 @@ class JSONVisualizer(private val rootJSONValue: JSONValue) {
     val configButtonsAdder : Composite
 
     @Inject
-//    var plugin: Plugin? = null
     lateinit var plugin: Plugin
 
     @InjectAdd
@@ -65,12 +64,7 @@ class JSONVisualizer(private val rootJSONValue: JSONValue) {
             println("is initialized")
             plugin.pluginMain(this)
         }
-//        if (plugin != null) {
-//            println("is initialized")
-//            plugin!!.pluginMain(this)
-//        }
 
-        println(buttonActions)
         val window = this
         buttonActions.forEach { action ->
 

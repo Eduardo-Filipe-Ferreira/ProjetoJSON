@@ -112,50 +112,42 @@ class Check: Action {
 
             if(withOrWithout){//searching for with
 
-                if(itemsPropertyName.contains(propertyName))
-                    propertyMatch = true
-                else{ //its not on the name -> check value
-                    if (value is JSONObject){ //value is an object -> check children's name and value
-                        value.children.forEach {(key,_val) ->
-                            if(key == propertyName || _val.toString() == propertyName)
-                                propertyMatch = true
-                        }
-                    }else if (value is JSONArray){ //value is an array -> check children's value
-                        value.children.forEach{
-                            if(it.value.toString() == propertyName)
-                                propertyMatch = true
-                        }
-                    }else{ //isn't an array or an object so check only the value
-                        if(value.value.toString() == propertyName)
+                if (value is JSONObject){ //value is an object -> check children's name and value
+                    value.children.forEach {(key,_val) ->
+                        if(key == propertyName || _val.toString() == propertyName)
                             propertyMatch = true
                     }
+                }else if (value is JSONArray){ //value is an array -> check children's value
+                    value.children.forEach{
+                        if(it.value.toString() == propertyName)
+                            propertyMatch = true
+                    }
+                }else{ //isn't an array or an object so check only the value
+                    if(value.value.toString() == propertyName)
+                        propertyMatch = true
                 }
+
             }
             else{//searching for without
-                if(!itemsPropertyName.contains(propertyName)) {
-                    println(item.text)
-                    propertyMatch = true
-                }
-                else{//its not on the name -> check value
-                    if (value is JSONObject){ //value is an object -> check children's name and value
-                        propertyMatch = true //starts true until proven false
-                        value.children.forEach {(key,_val) ->
-                            if(key == propertyName || _val.toString() == propertyName)
-                                propertyMatch = false
-                        }
-                    }else if (value is JSONArray){ //value is an array -> check children's value
-                        propertyMatch = true
-                        value.children.forEach{
-                            if(it.value.toString() == propertyName)
-                                propertyMatch = false
-                        }
-                    }else{ //isn't an array or an object so check only the value
-                        propertyMatch = true
-                        if(value.value.toString() == propertyName)
+
+                if (value is JSONObject){ //value is an object -> check children's name and value
+                    propertyMatch = true //starts true until proven false
+                    value.children.forEach {(key,_val) ->
+                        if(key == propertyName || _val.toString() == propertyName)
                             propertyMatch = false
                     }
-
+                }else if (value is JSONArray){ //value is an array -> check children's value
+                    propertyMatch = true
+                    value.children.forEach{
+                        if(it.value.toString() == propertyName)
+                            propertyMatch = false
+                    }
+                }else{ //isn't an array or an object so check only the value
+                    propertyMatch = true
+                    if(value.value.toString() == propertyName)
+                        propertyMatch = false
                 }
+
             }
 
             if( typeMatch && propertyMatch)
