@@ -1,8 +1,4 @@
-import JSONValues.JSONArray
-import JSONValues.JSONComposedValue
-import JSONValues.JSONObject
 import Visitors.JSONVisitor
-import kotlin.properties.Delegates
 
 abstract class JSONValue(var value: Any? = null
 //                         , var parent: JSONComposedValue? = null
@@ -28,8 +24,6 @@ abstract class JSONValue(var value: Any? = null
     *
     *
     * */
-
-//    abstract fun mapJSONValue(): String
 
     /*
     *
