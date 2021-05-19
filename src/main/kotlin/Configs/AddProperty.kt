@@ -161,7 +161,7 @@ class AddProperty : Action{
         newTreeItem.data = value
         newTreeItem.text = textToUse
 
-        window.rePaintTree()
+        window.rePaintWindow()
         
     }
 

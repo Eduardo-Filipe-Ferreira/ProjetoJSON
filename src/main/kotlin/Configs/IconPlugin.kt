@@ -7,7 +7,7 @@ import JSONVisualizer
 import org.eclipse.swt.graphics.*
 import traverse
 
-class IconPlugin : Plugin() {
+class IconPlugin : Plugin {
     private val condition: (JSONValue) -> Boolean = {value:JSONValue -> value is JSONObject || value is JSONArray }
 
     override fun pluginMain(window: JSONVisualizer){

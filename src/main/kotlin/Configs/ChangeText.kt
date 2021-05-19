@@ -6,7 +6,7 @@ import JSONValues.JSONObject
 import JSONVisualizer
 import traverse
 
-class ChangeText: Plugin() {
+class ChangeText: Plugin {
     val conditionToChangeText: (JSONValue) -> Boolean = {value -> value is JSONObject || value is JSONArray }
 
     override fun pluginMain(window: JSONVisualizer) {

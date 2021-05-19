@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT
 import org.eclipse.swt.events.SelectionAdapter
 import org.eclipse.swt.events.SelectionEvent
 import org.eclipse.swt.graphics.Color
+import org.eclipse.swt.graphics.Image
 import org.eclipse.swt.layout.*
 import org.eclipse.swt.widgets.*
 
@@ -87,14 +88,6 @@ class JSONVisualizer(private val rootJSONValue: JSONValue) {
 
     }
 
-    fun rePaintTree(){
-        if (::plugin.isInitialized) {
-            println("is initialized")
-            plugin.pluginMain(this)
-        }
-    }
-
-
 
     private fun highlightItem(objName:String, tree: Tree){
 
@@ -142,6 +135,12 @@ class JSONVisualizer(private val rootJSONValue: JSONValue) {
     }
 
 
+    fun rePaintWindow(){
+        if (::plugin.isInitialized) {
+            println("is initialized")
+            plugin.pluginMain(this)
+        }
+    }
 
 }
 

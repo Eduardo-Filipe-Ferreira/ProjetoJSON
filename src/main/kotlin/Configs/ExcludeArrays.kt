@@ -5,7 +5,7 @@ import JSONVisualizer
 import org.eclipse.swt.widgets.TreeItem
 import traverse
 
-class ExcludeArrays: Plugin() {
+class ExcludeArrays: Plugin {
     override fun pluginMain(window: JSONVisualizer) {
         val itemTreesToDispose: MutableList<TreeItem> = mutableListOf()
 
