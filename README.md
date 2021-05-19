@@ -199,7 +199,7 @@ Alterar o texto do nó selecionado
 `JSONVisualizer.setSelectedTreeITemText(newText: String)`
 
 Alterar a imagem associada ao nó selecionado para a imagem com o path dado  
-`JSONVisualizer.setTreeItemImage(imagePath: String)`
+`JSONVisualizer.setSelectedTreeItemImage(imagePath: String)`
 
 Alterar a imagem associada a um dado nó para a imagem com o path dado  
 `JSONVisualizer.setTreeItemImage(treeItem : TreeItem, imagePath: String)`
