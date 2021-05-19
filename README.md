@@ -115,6 +115,16 @@ A inferência transpõem os dados da seguinte forma:
 Na criação de uma data classe é possivel ignorar um parametro na criação do JSONObject usando a anotação @Skip
 Pode-se também alterar o nome da propriedade que será associada ao objecto usando @ID(novo ID)
 
+Exemplo:
+´´´
+data class Point(
+        @Skip
+        val x:Int, //o JSONObject criado não terá a propriedade "x"
+        @ID("Id Test")
+        val y:Int  //a propriedade y será criada com o nome "id Test"
+        )
+´´´
+
 
 ## Janela de visualização 
 
@@ -131,6 +141,23 @@ A Janela de visualização é feita em conjunção com a biblioteca SWT e é com
 
 Exemplo: `JSONVisualizer(Objeto_a_visualizar).open()`
 
+### Distribuição de dados na Janela de visualização
+
+Os conteúdos de um determinado nó da arvore estão distribuidos da seguinte forma:
+
+```
+// considerando que existe um - val treeItem : TreeItem 
+
+println(treeItem.data)    //imprime na consola o JSONValue associado ao nó
+treeItem.data = JSONNull  //altera o JSONValue associado ao nó para um JSONNUll
+
+println(treeItem.text)      //imprime na consola o texto associado ao nó
+treeItem.text = "New Text"  //altera o texto do nó para "New Text" 
+
+```
+
+Para obter o item selecionado na tree basta fazer:
+`tree.selection.first() //devolve o TreeItem`
 
 ## Plugin's
 
@@ -151,10 +178,41 @@ visualizer.open()
 
 ### Plugins de apresentação
 
-Estes plugins são instanciados usando a classe abstrata Plugin
+Estes plugins são instanciados usando a interface Plugin
 
 Esta classe obriga à impletação do método pluginMain que recebe a window onde o plugin será aplicado
 
+Esta interface contém também algumas funções adicionais para auxiliar as alterações na janela de visualização, sendo elas:
+
+Obter o TreeItem selecionado  
+`JSONVisualizer.getSelectedTreeItem()`
+
+Obter o JSONValue associado ao TreeItem selecionado  
+`JSONVisualizer.getSelectedJSONValue() `
+
+Alterar o JSONValue associado ao nó selecionado para um JSONValue dado como argumento  
+`JSONVisualizer.setSelectedJSONValue(newValue : JSONValue)`
+
+Obter o texto do nó selecionado  
+`JSONVisualizer.getSelectedTreeITemText()`
+
+Alterar o texto do nó selecionado  
+`JSONVisualizer.setSelectedTreeITemText(newText: String)`
+
+Alterar a imagem associada ao nó selecionado para a imagem com o path dado  
+`JSONVisualizer.setTreeItemImage(imagePath: String)`
+
+Alterar a imagem associada a um dado nó para a imagem com o path dado  
+`JSONVisualizer.setTreeItemImage(treeItem : TreeItem, imagePath: String)`
+
+Alterar o texto de um dado nó  
+`JSONVisualizer.setTreeItemText(treeItem : TreeItem, newText: String)`
+
+Alterar a cor de fundo de um dado nó  
+`JSONVisualizer.setBackgroundColorItemTree(treeItem: TreeItem, color: Color)`
+
+Alterar a cor do nó selecionado  
+`JSONVisualizer.setBackgroundColorSelectedItemTree(color: Color)`
 
 ### Plugins de ações
 
