@@ -30,7 +30,7 @@ interface Plugin {
         tree.selection.first().text = newText
     }
 
-    fun JSONVisualizer.setTreeItemImage(imagePath: String){
+    fun JSONVisualizer.setSelectedTreeItemImage(imagePath: String){
         tree.selection.first().image = Image(tree.selection.first().display,imagePath)
     }
 
