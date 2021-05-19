@@ -154,6 +154,16 @@ treeItem.data = JSONNull  //altera o JSONValue associado ao nó para um JSONNUll
 println(treeItem.text)      //imprime na consola o texto associado ao nó
 treeItem.text = "New Text"  //altera o texto do nó para "New Text" 
 
+/*Para percorrer os items na tree*/
+tree.children.forEach{
+        println(it)//imprime nós diretos da tree
+}
+
+//ou usar a função Tree.transverse
+
+tree.transverse{
+        println(it)//imprime todos os nós da tree
+}
 ```
 
 Para obter o item selecionado na tree basta fazer:
