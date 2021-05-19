@@ -175,7 +175,6 @@ ConfigReader.applyConfigs(visualizer)
 visualizer.open()
 ```
 
-
 ### Plugins de apresentação
 
 Estes plugins são instanciados usando a interface Plugin
@@ -212,7 +211,19 @@ Alterar a cor de fundo de um dado nó
 `JSONVisualizer.setBackgroundColorItemTree(treeItem: TreeItem, color: Color)`
 
 Alterar a cor do nó selecionado  
-`JSONVisualizer.setBackgroundColorSelectedItemTree(color: Color)`
+`JSONVisualizer.setBackgroundColorSelectedItemTree(color: Color)`  
+  
+  
+  
+**Quando são feitas alterações à JSONVisualizer que influenciem o plugin de apresentação deve-se reaplicar esse plugin usando o método JSONVisualizer.rePaintWindow**  
+
+Exemplo: 
+
+```
+//admitindo que existe uma val window : JSONVisualizer
+window.rePaintWindow()
+```
+
 
 ### Plugins de ações
 
