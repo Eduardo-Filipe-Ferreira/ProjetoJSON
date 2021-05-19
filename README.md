@@ -116,14 +116,14 @@ Na criação de uma data classe é possivel ignorar um parametro na criação do
 Pode-se também alterar o nome da propriedade que será associada ao objecto usando @ID(novo ID)
 
 Exemplo:
-´´´
+```
 data class Point(
         @Skip
         val x:Int, //o JSONObject criado não terá a propriedade "x"
         @ID("Id Test")
         val y:Int  //a propriedade y será criada com o nome "id Test"
         )
-´´´
+```
 
 
 ## Janela de visualização 
