@@ -77,7 +77,7 @@ class AddProperty : Action{
     private fun checkValueTypeSelected(valueType: Combo, propertyValue:Text){
 
         valueType.addModifyListener {
-            propertyValue.isEnabled = !(valueType.text == "Object" || valueType.text == "Array")
+            propertyValue.isEnabled = !(valueType.text == "Object" || valueType.text == "Array" || valueType.text == "Null")
         }
     }
 
