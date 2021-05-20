@@ -169,6 +169,9 @@ tree.transverse{
 Para obter o item selecionado na tree basta fazer:
 `tree.selection.first() //devolve o TreeItem`
 
+Para atualizar o texto do item selecionado na Label basta usar:
+`window.setLabelTextOnSelection()`
+
 ## Plugin's
 
 São permitidos 2 tipos de plugins:
