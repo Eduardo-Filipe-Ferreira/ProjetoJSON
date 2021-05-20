@@ -21,12 +21,12 @@ class Edit: Action{
         if( (selectedItem.data as JSONValue) !is JSONObject &&
             (selectedItem.data as JSONValue) !is JSONArray &&
             !checkIfIsInArray((selectedItem.data as JSONValue)))
-            createEditShell(tree).open()
+            createEditShell(tree , window).open()
     }
 
 }
 
-fun createEditShell(tree: Tree) : Shell {
+fun createEditShell(tree: Tree , window: JSONVisualizer) : Shell {
     val selectedItem = tree.selection.first()
     val selectedJSONValue = (selectedItem.data as JSONValue)
     
@@ -71,6 +71,7 @@ fun createEditShell(tree: Tree) : Shell {
                     editShell.close()
                 }
 
+                window.setLabelTextOnSelection()
             }
         }
     })

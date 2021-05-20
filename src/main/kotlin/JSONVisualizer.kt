@@ -113,23 +113,7 @@ class JSONVisualizer(private val rootJSONValue: JSONValue) {
 
         tree.addSelectionListener(object : SelectionAdapter() {
             override fun widgetSelected(e: SelectionEvent) {
-                val serializeObject = tree.selection.first().data as JSONValue
-                if(serializeObject is JSONObject || serializeObject is JSONArray ) {
-                    text.text = removeExcessTabs(SerializeVisitor(serializeObject).objectMap, serializeObject)
-                }
-                else {
-                    if (serializeObject.parent is JSONArray)
-                        text.text = SerializeVisitor(serializeObject).objectMap
-                    else
-                        text.text = SerializeVisitor(serializeObject).objectMap.split(":")[1]
-                }
-
-                if(text.text.last() == ',')
-                    text.text = text.text.dropLast(1)
-
-                if (text.text.substringAfterLast(',') == "\n")
-                    text.text = text.text.dropLast(2)
-                text.requestLayout()
+                setLabelTextOnSelection()
             }
         })
     }
@@ -140,6 +124,26 @@ class JSONVisualizer(private val rootJSONValue: JSONValue) {
             println("is initialized")
             plugin.pluginMain(this)
         }
+    }
+
+    fun setLabelTextOnSelection(){
+        val serializeObject = tree.selection.first().data as JSONValue
+        if(serializeObject is JSONObject || serializeObject is JSONArray ) {
+            text.text = removeExcessTabs(SerializeVisitor(serializeObject).objectMap, serializeObject)
+        }
+        else {
+            if (serializeObject.parent is JSONArray)
+                text.text = SerializeVisitor(serializeObject).objectMap
+            else
+                text.text = SerializeVisitor(serializeObject).objectMap.split(":")[1]
+        }
+
+        if(text.text.last() == ',')
+            text.text = text.text.dropLast(1)
+
+        if (text.text.substringAfterLast(',') == "\n")
+            text.text = text.text.dropLast(2)
+        text.requestLayout()
     }
 
 }
