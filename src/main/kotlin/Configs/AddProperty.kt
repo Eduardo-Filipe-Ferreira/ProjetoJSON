@@ -162,6 +162,7 @@ class AddProperty : Action{
         newTreeItem.text = textToUse
 
         window.rePaintWindow()
+        window.setLabelTextOnSelection()
         
     }
 

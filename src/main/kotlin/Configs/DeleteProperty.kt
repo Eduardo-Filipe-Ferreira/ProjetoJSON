@@ -21,5 +21,6 @@ class DeleteProperty : Action{
                 (valueSelected.parent as JSONArray).removeProperty(valueSelected)
 
         treeItemSelected.dispose()
+        window.setLabelTextOnSelection()
     }
 }
